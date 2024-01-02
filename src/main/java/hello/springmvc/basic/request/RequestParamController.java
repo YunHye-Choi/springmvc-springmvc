@@ -1,9 +1,11 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -77,11 +79,29 @@ public class RequestParamController {
 
     @ResponseBody // : return값을 응답 바디에 박아넣음 (@RestController와 같은 기능)
     @RequestMapping("/request-param-map")
-    public String requestParamMap(
-            @RequestParam Map<String, Object> paramMap){
-
+    public String requestParamMap(@RequestParam Map<String, Object> paramMap){
         String username = (String) paramMap.get("username");
         int age = Integer.parseInt((String)paramMap.get("age"));
+        log.info("username={}, age={}", username, age);
+
+        return "ok";
+    }
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData){
+        String username = helloData.getUsername();
+        int age = helloData.getAge();
+        log.info("username={}, age={}", username, age);
+
+        return "ok";
+    }
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData){
+        String username = helloData.getUsername();
+        int age = helloData.getAge();
         log.info("username={}, age={}", username, age);
 
         return "ok";
